@@ -1,0 +1,125 @@
+::selection {
+  background: rgba(26, 179, 148, 0.3);
+}
+
+::-moz-selection {
+  background: rgba(26, 179, 148, 0.3);
+}
+
+.pill-button {
+  color: #ffa500;
+}
+
+.pill-button:hover, .pill-button.active {
+  color: #ffa500;
+}
+
+.overlay-menu a:hover {
+  color: #ffa500 !important;
+}
+
+.overlay-menu a.active {
+  color: #ffa500 !important;
+}
+
+.bg-base-color {
+  background-color: #ffa500 !important;
+}
+
+.base-color {
+  color: #ffa500 !important;
+}
+
+.follow-label::before {
+  background-color: #ffa500;
+}
+
+.social a:hover {
+  color: #ffa500 !important;
+}
+
+.social-icon a:hover {
+  color: #ffa500;
+}
+
+#pp-nav li:hover span {
+  background-color: #ffa500 !important;
+}
+
+#pp-nav li .active span {
+  background-color: #ffa500 !important;
+}
+
+.border-style {
+  background-color: #ffa500;
+}
+
+.timeline-icon {
+  border: 1px solid #ffa500;
+  background-color: #ffa500;
+}
+
+.timeline-year {
+  color: #ffa500;
+}
+
+.timeline-item:before {
+  border: 1px solid #ffa500;
+}
+
+.skill-box .fill-skillbar {
+  background-color: #ffa500;
+}
+
+.portfolio .portfolio-filter li a {
+  color: #ffa500;
+}
+
+.testimonial .owl-dot.active span {
+  background-color: #ffa500;
+}
+
+.blog-link a:hover {
+  color: #0c9b7e !important;
+}
+
+.portfolio .portfolio-item-content:before {
+  background-color: rgba(26, 179, 148, 0.9);
+}
+
+.portfolio .portfolio-icon button i, .portfolio .portfolio-icon a i {
+  color: #ffa500;
+}
+
+.testimonial .owl-carousel .owl-dot.active span {
+  background-color: #ffa500;
+}
+
+.contact .form-item .form-control {
+  color: #ffa500;
+}
+
+.loader {
+  border-top: 4px solid #ffa500 !important;
+}
+
+.flat-demo .button-border, .design-dark.flat-demo .button-border {
+  background-color: #ffa500;
+}
+
+.flat-demo .pill-button:hover, .flat-demo .pill-button.active {
+  background-color: #0c9b7e;
+}
+
+.design-dark .social-icon a:hover, .design-dark .social a:hover {
+  color: #ffa500 !important;
+}
+
+.design-dark #pp-nav li .active span {
+  background-color: #ffa500 !important;
+}
+
+.design-dark #pp-nav li:hover span {
+  background-color: #ffa500 !important;
+}
+/*# sourceMappingURL=green-color.css.map */
