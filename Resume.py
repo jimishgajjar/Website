@@ -244,7 +244,7 @@ DATA = {
         },
         {
             'name': "LIMS – Laboratory Information Management System",
-            'link': "N/A",
+            'link': "",
             'tech': "React, Redux, Node.js, Express, MongoDB",
             'bullets': [
                 "Designed specimen tracking UI with filters, facets, and virtualized lists.",
@@ -257,7 +257,7 @@ DATA = {
         },
         {
             'name': "ShopSphere – AI-Driven E-Commerce Platform with Mobile App",
-            'link': "N/A",
+            'link': "",
             'tech': "React Native, React, GraphQL, AWS, Tailwind CSS",
             'bullets': [
                 "Implemented AI-based recommendations via <b>GraphQL</b> services.",
@@ -270,11 +270,11 @@ DATA = {
         }
     ],
     'education': [
-        ("Algonquin College, Ottawa, ON", "2024 – 2025", 
+        ("Algonquin College, Ottawa, ON.", "2024 – 2025", 
          "Post Graduate Certificate in Cloud Development and Operations", "CGPA: 3.94/4"),
-        ("Conestoga College, Kitchener, ON", "2023 – 2024", 
+        ("Conestoga College, Milton, ON.", "2023 – 2024", 
          "Post Graduate Certificate in Computer Application Development", "CGPA: 3.72/4"),
-        ("Silver Oak College of Engineering & Technology, India", "2018 – 2021", 
+        ("Silver Oak College of Engineering & Technology, India.", "2018 – 2021", 
          "Bachelor of Engineering in Information Technology", "CGPA: 8.41/10")
     ]
 }
