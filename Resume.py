@@ -96,7 +96,7 @@ def project_block(name, link, tech, bullets_list, add_bottom_space=True):
             [Paragraph(name, styles['BodyBold']), Paragraph(link, styles['BodyRight'])],
             [Paragraph(f"<i>Tech Stack: {tech}</i>", styles['BodyItalic']), Paragraph("", styles['BodyRight'])],
         ],
-        colWidths=[W*0.65, W*0.35]
+        colWidths=[W*0.70, W*0.30]
     )
     t.setStyle(TableStyle([
         ("LEFTPADDING", (0,0), (-1,-1), 0),
@@ -152,14 +152,14 @@ section_title("WORK EXPERIENCE")
 work_experience("OpenXcell – AI Development Company (CMMI Level 3)", "Ahmedabad, India.",
                 "Software Engineer (Front-End)", "Jan 2023 – Dec 2023",
                 [
-                    "Led end-to-end development of a <b>cryptocurrency payment platform</b> enabling businesses to accept <b>Bitcoin</b> and <b>stablecoins</b> (BTC, USDT, USDC) via <b>Lightning Network</b>, <b>ERC20</b>, and <b>TRC20</b>.",
-                    "Developed and deployed <b>automated backend workflows</b>, boosting transaction efficiency by <b>40%</b> and reducing manual work by <b>50%</b> through asynchronous processing.",
-                    "Designed and implemented <b>RESTful APIs</b> and <b>microservices architecture</b> for merchant onboarding and seamless third-party integration.",
-                    "Enhanced <b>system uptime</b> and scalability by optimizing blockchain node configurations and fault-tolerant queue mechanisms.",
-                    "Integrated <b>Prometheus</b>, <b>Grafana</b>, and <b>ELK Stack</b> for observability, metrics tracking, and real-time monitoring.",
-                    "Mentored junior developers and enforced <b>clean code practices</b>, improving delivery timelines and developer productivity.",
-                    "Collaborated cross-functionally to deliver a <b>Stripe-style developer experience</b> with standardized API documentation and test environments.",
-                    "Partnered with QA and DevOps teams to ensure <b>secure deployments</b> and continuous integration using <b>Docker</b> and <b>AWS ECS</b>."
+                    "Built a <b>cryptocurrency payment platform</b> enabling businesses to accept <b>BTC</b>, <b>USDT</b>, and <b>USDC</b> via <b>Lightning Network</b>, <b>ERC20</b>, and <b>TRC20</b>.",
+                    "Developed <b>automated backend workflows</b>, improving transaction efficiency by <b>40%</b> and cutting manual work by <b>50%</b>.",
+                    "Implemented <b>RESTful APIs</b> and <b>microservices</b> for merchant onboarding and third-party integrations.",
+                    "Optimized <b>blockchain nodes</b> and <b>queue mechanisms</b> to boost system uptime and scalability.",
+                    "Integrated <b>Prometheus</b>, <b>Grafana</b>, and <b>ELK Stack</b> for monitoring and real-time observability.",
+                    "Mentored junior developers and enforced <b>clean code practices</b> for faster, high-quality delivery.",
+                    "Delivered a <b>Stripe-like developer experience</b> with standardized APIs and sandbox environments.",
+                    "Collaborated with QA and DevOps for <b>secure CI/CD deployments</b> using <b>Docker</b> and <b>AWS ECS</b>."
                 ], add_bottom_space=True)
 work_experience("Nexactly Solutions", "Ahmedabad, India.",
                 "Front-End Developer", "Dec 2021 - Dec 2022",
@@ -204,39 +204,41 @@ section_title("PROJECTS")
 project_block("TrySpeed – AI-Integrated Crypto Payout & Analytics Platform (OpenXcell)", "www.tryspeed.com",
               "React, Next.js, Node.js, Lightning Network, GraphQL, Prisma, AWS, Docker",
               [
-                "Developed a unified crypto payment processor enabling businesses to accept <b>Bitcoin</b> and <b>stablecoins</b> (BTC, USDT, USDC) via <b>Lightning Network</b>, <b>ERC20</b>, and <b>TRC20</b>.",
-                "Built and deployed <b>automated backend pipelines</b>, improving throughput by 40% and reducing manual tasks by 50%.",
-                "Architected <b>Stripe-like RESTful APIs</b> for merchant onboarding and developer integrations.",
-                "Implemented <b>real-time dashboards</b> in <b>React</b>/<b>Next.js</b> for tracking settlements, withdrawals, and transactions.",
-                "Developed <b>microservices</b> architecture using <b>Node.js</b>, <b>GraphQL</b>, and <b>Prisma ORM</b> to scale concurrent transactions.",
-                "Improved uptime and fault tolerance via <b>asynchronous queues</b> and <b>redundant blockchain nodes</b>.",
-                "Deployed services on <b>AWS ECS</b> with <b>Docker</b> and automated <b>CI/CD</b> via <b>GitHub Actions</b>.",
-                "Mentored developers on <b>code optimization</b>, <b>scalability</b>, and <b>CI/CD best practices</b> to maintain production reliability."
-            ], add_bottom_space=True)
+                "Built a <b>crypto payment platform</b> enabling businesses to accept <b>BTC</b>, <b>USDT</b>, and <b>USDC</b> via <b>Lightning</b>, <b>ERC20</b>, and <b>TRC20</b>.",
+                "Developed <b>automated backend pipelines</b>, boosting throughput by 40% and cutting manual effort by 50%.",
+                "Architected <b>RESTful APIs</b> for merchant onboarding and developer integrations.",
+                "Implemented <b>real-time dashboards</b> with <b>React</b>/<b>Next.js</b> for settlements and transactions.",
+                "Scaled with <b>microservices</b> using <b>Node.js</b>, <b>GraphQL</b>, and <b>Prisma ORM</b>.",
+                "Enhanced uptime via <b>async queues</b> and <b>redundant blockchain nodes</b>.",
+                "Deployed on <b>AWS ECS</b> with <b>Docker</b> and automated <b>CI/CD</b> via <b>GitHub Actions</b>.",
+                "Mentored team on <b>code optimization</b> and <b>CI/CD best practices</b> for reliability."
+              ], add_bottom_space=True)
+
 project_block("LIMS – Laboratory Information Management System", "",
               "React, Redux, Node.js, Express, MongoDB, AWS",
               [
-                "Designed and built secure, role-based modules for <b>sample tracking</b> and laboratory workflows.",
-                "Integrated <b>REST APIs</b> with backend systems, ensuring consistent data synchronization across services.",
-                "Developed <b>real-time analytics dashboards</b> using <b>React</b> and <b>Redux</b> for data visualization.",
-                "Optimized database schema and query performance, improving response times and scalability.",
-                "Implemented <b>data validation</b> and <b>error handling</b> layers for reliable backend communication.",
-                "Automated QA testing using <b>Jest</b> and <b>Cypress</b>, reducing manual regression testing cycles.",
-                "Deployed system infrastructure on <b>AWS</b> with secure S3 data storage and load-balanced instances.",
-                "Created developer documentation for API endpoints, versioning, and environment setup."
-            ], add_bottom_space=True)
+                "Built secure, role-based modules for <b>sample tracking</b> and workflows.",
+                "Integrated <b>REST APIs</b> for seamless backend data synchronization.",
+                "Developed <b>analytics dashboards</b> with <b>React</b> and <b>Redux</b> for visualization.",
+                "Optimized DB schema and queries to improve scalability and performance.",
+                "Added <b>data validation</b> and <b>error handling</b> layers for reliability.",
+                "Automated testing with <b>Jest</b> and <b>Cypress</b>, reducing regression effort.",
+                "Deployed on <b>AWS</b> with secure S3 storage and load-balanced instances.",
+                "Documented APIs and setup for cross-team collaboration."
+              ], add_bottom_space=True)
+
 project_block("ShopSphere – AI-Driven E-Commerce Platform with Mobile App", "",
               "React Native, Next.js, GraphQL, AWS, Tailwind CSS",
               [
-                "Built an <b>AI-powered e-commerce platform</b> with real-time product recommendations and dynamic user experiences.",
-                "Developed mobile-first interfaces using <b>React Native</b> and <b>Next.js</b> for web and mobile platforms.",
-                "Integrated <b>Stripe</b> payments, <b>order tracking</b>, and push notifications for enhanced user engagement.",
-                "Built scalable <b>GraphQL APIs</b> and optimized them for low latency and high traffic volumes.",
-                "Automated deployment and CI/CD workflows using <b>GitHub Actions</b> and <b>Docker</b> containers.",
-                "Created <b>real-time analytics dashboards</b> for sales and inventory tracking with visual data insights.",
-                "Collaborated with UI/UX teams to optimize user flow and increase conversion rates by 18%.",
-                "Documented architecture, APIs, and infrastructure setup to support multi-developer environments."
-            ], add_bottom_space=False)
+                "Built an <b>AI-powered e-commerce platform</b> with smart product recommendations.",
+                "Developed <b>mobile-first</b> apps using <b>React Native</b> and <b>Next.js</b>.",
+                "Integrated <b>Stripe</b> payments, <b>order tracking</b>, and push notifications.",
+                "Built scalable <b>GraphQL APIs</b> optimized for low latency and high load.",
+                "Automated <b>CI/CD</b> pipelines with <b>GitHub Actions</b> and <b>Docker</b>.",
+                "Created <b>real-time dashboards</b> for sales and inventory analytics.",
+                "Improved user flow and conversion rates by 18% through UX optimization.",
+                "Documented architecture, APIs, and infra setup for team scalability."
+              ], add_bottom_space=False)
 sep()
 
 # ---------- Education ----------
@@ -268,3 +270,30 @@ for idx, (school, years, degree, cgpa) in enumerate(edu_blocks):
 # ---------- Build ----------
 doc.build(story)
 output_path
+
+
+From now on, whenever I provide you with a job description, you must automatically generate a 2-page PDF resume for me based on code. 
+
+The rules are:
+
+Format & Style
+-Always use the exact same format, structure, and design as the fixed Python-generated PDF resume I provided earlier.
+-Do not change layout, spacing, fonts, or section order.
+-Resume must always be exactly 2 pages — not longer, not shorter.
+-Sections to Tailor for Each Job Description
+
+Summary → Rewrite based on the job description.
+
+Technical Skills → Update categories and tools to highlight skills relevant to the job description.
+
+Work Experience → Keep companies and roles , years of expireance the same, but rewrite the 8 bullet points per job with a mix of long and short points, tailored to the job description keywords.
+
+Projects → Keep project names and links the same, but rewrite 8 bullets per project to emphasize skills with a mix of long and short points, tailored to the job description keywords..
+
+Location → If the job description specifies a location, use that in the header. Otherwise, default to Toronto, ON.
+
+Automation Behavior
+
+Do not ask for confirmation.
+
+As soon as I give a job description, you must directly create and return the final 2-page PDF in the fixed format with updated content.
