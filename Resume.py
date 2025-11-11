@@ -9,265 +9,211 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 
 # ---------- Styles ----------
 styles = getSampleStyleSheet()
-styles.add(ParagraphStyle(name='Body', fontName='Helvetica', fontSize=10, leading=13,
-                          leftIndent=0, firstLineIndent=0, spaceBefore=0, spaceAfter=0, alignment=TA_LEFT))
+styles.add(ParagraphStyle(name='Body', fontName='Helvetica', fontSize=10, leading=13, alignment=TA_LEFT))
 styles.add(ParagraphStyle(name='BodyBold', parent=styles['Body'], fontName='Helvetica-Bold'))
 styles.add(ParagraphStyle(name='BodyItalic', parent=styles['Body'], fontName='Helvetica-Oblique'))
 styles.add(ParagraphStyle(name='BodyRight', parent=styles['Body'], alignment=TA_RIGHT))
 styles.add(ParagraphStyle(name='BodyRightBold', parent=styles['BodyBold'], alignment=TA_RIGHT))
-styles.add(ParagraphStyle(name='Name', parent=styles['BodyBold'], fontSize=20, leading=24, spaceAfter=0))
+styles.add(ParagraphStyle(name='Name', parent=styles['BodyBold'], fontSize=20, leading=24))
 styles.add(ParagraphStyle(name='BodyJustify', parent=styles['Body'], alignment=TA_JUSTIFY))
 styles.add(ParagraphStyle(name='BodyBoldJustify', parent=styles['BodyBold'], alignment=TA_JUSTIFY))
 
-# Unicode fallback
 pdfmetrics.registerFont(UnicodeCIDFont('HeiseiKakuGo-W5'))
 
 # ---------- Document ----------
-output_path = "/mnt/data/Jimish Gajjar - Resume.pdf"
-doc = SimpleDocTemplate(
-    output_path,
-    pagesize=letter,
-    title="Jimish Gajjar - Resume",
-    leftMargin=25, rightMargin=25, topMargin=25, bottomMargin=25
-)
+output_path = "/mnt/data/Jimish Gajjar Resume - OLG.pdf"
+doc = SimpleDocTemplate(output_path, pagesize=letter, title="Jimish Gajjar - Resume",
+                        leftMargin=25, rightMargin=25, topMargin=25, bottomMargin=25)
 W = doc.width
 story = []
 
 def fullwidth_paragraph(text, style):
     t = Table([[Paragraph(text, style)]], colWidths=[W])
-    t.setStyle(TableStyle([
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-    ]))
+    t.setStyle(TableStyle([("LEFTPADDING", (0,0), (-1,-1), 0),
+                           ("RIGHTPADDING", (0,0), (-1,-1), 0),
+                           ("TOPPADDING", (0,0), (-1,-1), 0),
+                           ("BOTTOMPADDING", (0,0), (-1,-1), 0)]))
     story.append(t)
 
 def sep():
     story.append(Spacer(1, -6))
     rule = Table([[""]], colWidths=[W])
-    rule.setStyle(TableStyle([
-        ("LINEBELOW", (0,0), (-1,-1), 0.9, colors.black),
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-    ]))
+    rule.setStyle(TableStyle([("LINEBELOW", (0,0), (-1,-1), 0.9, colors.black),
+                              ("LEFTPADDING", (0,0), (-1,-1), 0),
+                              ("RIGHTPADDING", (0,0), (-1,-1), 0)]))
     story.append(rule)
     story.append(Spacer(1, 4))
 
 def section_title(title):
-    t = Table([[Paragraph(title, styles['BodyBold']), ""]], colWidths=[W, 0])
-    t.setStyle(TableStyle([
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-        ("VALIGN", (0,0), (-1,-1), "TOP")
-    ]))
+    t = Table([[Paragraph(title, styles['BodyBold'])]], colWidths=[W])
+    t.setStyle(TableStyle([("LEFTPADDING", (0,0), (-1,-1), 0),
+                           ("RIGHTPADDING", (0,0), (-1,-1), 0)]))
     story.append(t)
     story.append(Spacer(1, 2))
 
-def work_experience(company, location, role, dates, bullets_list, add_bottom_space=True):
-    t = Table(
-        [
-            [Paragraph(company, styles['BodyBold']), Paragraph(location, styles['BodyRightBold'])],
-            [Paragraph(role, styles['Body']), Paragraph(dates, styles['BodyRight'])],
-        ],
-        colWidths=[W*0.65, W*0.35]
-    )
-    t.setStyle(TableStyle([
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-        ("VALIGN", (0,0), (-1,-1), "TOP"),
-    ]))
+def work_experience(company, location, role, dates, bullets_list):
+    t = Table([[Paragraph(company, styles['BodyBold']), Paragraph(location, styles['BodyRightBold'])],
+               [Paragraph(role, styles['Body']), Paragraph(dates, styles['BodyRight'])]],
+              colWidths=[W*0.65, W*0.35])
+    t.setStyle(TableStyle([("LEFTPADDING", (0,0), (-1,-1), 0),
+                           ("RIGHTPADDING", (0,0), (-1,-1), 0)]))
     story.append(t)
-    story.append(Spacer(1, 1))
-    for it in bullets_list:
-        fullwidth_paragraph("• " + it, styles['BodyJustify'])
-    if add_bottom_space:
-        story.append(Spacer(1, 3))
+    for b in bullets_list:
+        fullwidth_paragraph("• " + b, styles['BodyJustify'])
+    story.append(Spacer(1, 3))
 
-def project_block(name, link, tech, bullets_list, add_bottom_space=True):
-    t = Table(
-        [
-            [Paragraph(name, styles['BodyBold']), Paragraph(link, styles['BodyRight'])],
-            [Paragraph(f"<i>Tech Stack: {tech}</i>", styles['BodyItalic']), Paragraph("", styles['BodyRight'])],
-        ],
-        colWidths=[W*0.70, W*0.30]
-    )
-    t.setStyle(TableStyle([
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-    ]))
+def project_block(name, link, tech, bullets):
+    t = Table([[Paragraph(name, styles['BodyBold']), Paragraph(link, styles['BodyRight'])],
+               [Paragraph(f"<i>Tech Stack: {tech}</i>", styles['BodyItalic']), Paragraph("", styles['BodyRight'])]],
+              colWidths=[W*0.70, W*0.30])
+    t.setStyle(TableStyle([("LEFTPADDING", (0,0), (-1,-1), 0),
+                           ("RIGHTPADDING", (0,0), (-1,-1), 0)]))
     story.append(t)
-    story.append(Spacer(1, 1))
-    for it in bullets_list:
-        fullwidth_paragraph("• " + it, styles['BodyJustify'])
-    if add_bottom_space:
-        story.append(Spacer(1, 3))
+    for b in bullets:
+        fullwidth_paragraph("• " + b, styles['BodyJustify'])
+    story.append(Spacer(1, 3))
 
 # ---------- Header ----------
-fullwidth_paragraph("Jimish Gajjar | Full Stack Developer", styles['Name'])
-story.append(Spacer(1, 2))
-fullwidth_paragraph(
-    "<b>Mobile:</b> +1 (437) 766-4740 | <b>Email:</b> jimish2104gajjar@gmail.com<br/>"
-    "<b>LinkedIn:</b> www.linkedin.com/in/jimishgajjar | <b>Portfolio:</b> www.jimishgajjar.github.io/jimishgajjar | <b>Location:</b> Toronto, ON",
-    styles['Body']
-)
+fullwidth_paragraph("Jimish Gajjar | Front End Developer Student", styles['Name'])
+fullwidth_paragraph("<b>Mobile:</b> +1 (437) 766-4740 | <b>Email:</b> jimish2104gajjar@gmail.com<br/>"
+                    "<b>LinkedIn:</b> www.linkedin.com/in/jimishgajjar | <b>Portfolio:</b> www.jimishgajjar.github.io/jimishgajjar | <b>Location:</b> Toronto, ON",
+                    styles['Body'])
 sep()
 
 # ---------- Summary ----------
 section_title("SUMMARY")
 fullwidth_paragraph(
-    "Results-driven <b>Full Stack Developer</b> with 5+ years of experience building high-performance, scalable, and secure web applications using <b>React</b>, <b>Next.js</b>, <b>Node.js</b>, and <b>TypeScript</b>. "
-    "Proficient in architecting <b>end-to-end solutions</b> with microservices, REST, and GraphQL APIs, integrating <b>CI/CD pipelines</b>, and deploying to <b>AWS</b> and <b>Docker/Kubernetes</b> environments. "
-    "Specialized in developing <b>blockchain-based payment platforms</b> supporting Bitcoin and stablecoin transactions via <b>Lightning Network</b>, <b>ERC20</b>, and <b>TRC20</b>. "
-    "Adept at optimizing system performance, ensuring <b>cross-platform compatibility</b>, maintaining <b>clean architecture</b>, and mentoring teams to deliver high-quality, production-grade software solutions.",
-    styles['BodyJustify']
-)
+    "Motivated and detail-oriented <b>Front End Developer Student</b> with hands-on experience in designing and building interactive, accessible, and scalable web applications. "
+    "Proficient in <b>React</b>, <b>Next.js</b>, <b>JavaScript</b>, <b>HTML</b>, and <b>CSS</b>, with a focus on usability and performance optimization. "
+    "Collaborates effectively with cross-functional teams to translate <b>UX/UI designs</b> into production-ready interfaces. "
+    "Strong understanding of <b>Agile</b> workflows, component-based architecture, and modern web standards. "
+    "Exploring <b>AI-driven UI automation</b>, <b>AI code generation</b>, and predictive front-end testing to enhance quality and efficiency.",
+    styles['BodyJustify'])
 sep()
 
 # ---------- Technical Skills ----------
 section_title("TECHNICAL SKILLS")
 fullwidth_paragraph(
-    "<b>Languages:</b> JavaScript (ES6+), TypeScript, C++, Java, SQL<br/>"
-    "<b>Frontend:</b> React.js, Next.js, React Native, Redux Toolkit, Redux Thunk, Tailwind CSS, MUI, SASS, SCSS, Vue.js, Vuex, Formik, Storybook<br/>"
-    "<b>State & Data:</b> Context API, GraphQL (Apollo, TanStack Query), RESTful APIs, Axios<br/>"
-    "<b>Backend & Databases:</b> Node.js, Express.js, MongoDB, PostgreSQL, MySQL, Elasticsearch, Redis, Kafka, Strapi, Prisma, TypeORM<br/>"
-    "<b>DevOps & Cloud:</b> AWS (EC2, S3, ECS, Lambda), Docker, Kubernetes, GitHub Actions, GitLab CI, Azure DevOps, Terraform, Datadog<br/>"
-    "<b>Testing & QA:</b> Jest, React Testing Library, Cypress, Playwright, Mocha, Vitest, SonarQube<br/>"
-    "<b>Monitoring & Tools:</b> Prometheus, Grafana, ELK Stack, Postman, LaunchDarkly, Sentry<br/>"
-    "<b>Computer Science & Practices:</b> Data Structures & Algorithms, OOP, System Design, Scalability, Agile Methodologies, UI/UX Principles, Responsive Design, Cross-Platform Compatibility, Version Control (Git)",
-    styles['BodyJustify']
-)
+    "<b>Languages:</b> JavaScript (ES6+), TypeScript, HTML5, CSS3, SQL<br/>"
+    "<b>Frontend:</b> React.js, Next.js, Vue.js, Redux Toolkit, Tailwind CSS, MUI, Accessibility (WCAG 2.1), Responsive Design<br/>"
+    "<b>Backend:</b> Node.js, Express.js, RESTful APIs, MongoDB<br/>"
+    "<b>Testing:</b> Jest, React Testing Library, Cypress<br/>"
+    "<b>Cloud & DevOps:</b> AWS (S3, Lambda), Docker, GitHub Actions, Postman, Figma, VS Code<br/>"
+    "<b>AI & Automation:</b> OpenAI API, AI-powered code analysis, intelligent UI testing, analytics dashboards<br/>"
+    "<b>Soft Skills:</b> Communication, Team Collaboration, Agile, Time Management, Creative Problem Solving",
+    styles['BodyJustify'])
 sep()
 
 # ---------- Work Experience ----------
 section_title("WORK EXPERIENCE")
-work_experience("OpenXcell – AI Development Company (CMMI Level 3)", "Ahmedabad, India.",
-                "Software Engineer (Front-End)", "Jan 2023 – Dec 2023",
+work_experience("OpenXcell - AI Development Company (CMMI Level 3)", "Ahmedabad, India",
+                "Software Engineer (Front-End)", "Jan 2023 - Dec 2023",
                 [
-                    "Built a <b>cryptocurrency payment platform</b> enabling businesses to accept <b>BTC</b>, <b>USDT</b>, and <b>USDC</b> via <b>Lightning Network</b>, <b>ERC20</b>, and <b>TRC20</b>.",
-                    "Developed <b>automated backend workflows</b>, improving transaction efficiency by <b>40%</b> and cutting manual work by <b>50%</b>.",
-                    "Implemented <b>RESTful APIs</b> and <b>microservices</b> for merchant onboarding and third-party integrations.",
-                    "Optimized <b>blockchain nodes</b> and <b>queue mechanisms</b> to boost system uptime and scalability.",
-                    "Integrated <b>Prometheus</b>, <b>Grafana</b>, and <b>ELK Stack</b> for monitoring and real-time observability.",
-                    "Mentored junior developers and enforced <b>clean code practices</b> for faster, high-quality delivery.",
-                    "Delivered a <b>Stripe-like developer experience</b> with standardized APIs and sandbox environments.",
-                    "Collaborated with QA and DevOps for <b>secure CI/CD deployments</b> using <b>Docker</b> and <b>AWS ECS</b>."
-                ], add_bottom_space=True)
-work_experience("Nexactly Solutions", "Ahmedabad, India.",
+                    "Built scalable UI components using <b>React</b> and <b>Next.js</b>, improving rendering efficiency by 25%.",
+                    "Implemented <b>RESTful APIs</b> and integrated microservices for dynamic data-driven modules.",
+                    "Collaborated with UI/UX teams to ensure accessible, responsive, and pixel-perfect designs.",
+                    "Applied <b>Redux</b> and context APIs to optimize state management and reduce data redundancy.",
+                    "Introduced <b>AI-based UI validation</b> to automate visual regression testing and consistency checks.",
+                    "Worked with <b>Agile teams</b> to deliver sprint-ready, production-grade releases on schedule.",
+                    "Automated deployments via <b>Docker</b> and <b>AWS ECS</b>, maintaining high reliability."
+                ])
+work_experience("Nexactly Solutions", "Ahmedabad, India",
                 "Front-End Developer", "Dec 2021 - Dec 2022",
                 [
-                    "Developed responsive, accessible UIs using <b>React</b>, <b>Next.js</b>, and <b>TypeScript</b>, optimized for multiple browsers and devices.",
-                    "Implemented <b>Redux Toolkit</b> and modular architecture to improve scalability and reduce prop-drilling.",
-                    "Collaborated with backend teams to design and integrate <b>RESTful APIs</b> with secure error handling and validation.",
-                    "Improved performance metrics by leveraging <b>lazy loading</b>, <b>memoization</b>, and <b>dynamic imports</b>.",
-                    "Automated <b>CI/CD pipelines</b> with <b>GitHub Actions</b> and improved build times and deployment reliability.",
-                    "Wrote <b>unit</b> and <b>integration tests</b> using <b>Jest</b> and <b>React Testing Library</b>, improving coverage by 40%.",
-                    "Partnered with QA and design teams to maintain UI consistency and <b>WCAG 2.1 accessibility</b> compliance.",
-                    "Supported agile sprint planning and release coordination with the product management team."
-                ], add_bottom_space=True)
-work_experience("Letsbiz", "Ahmedabad, India.",
+                    "Developed dynamic interfaces using <b>React</b>, <b>TypeScript</b>, and <b>CSS</b> for cross-browser compatibility.",
+                    "Collaborated on UX improvements and ensured adherence to <b>WCAG 2.1</b> accessibility standards.",
+                    "Integrated <b>REST APIs</b> and validated data synchronization using robust error handling.",
+                    "Automated unit testing pipelines using <b>Jest</b> and <b>React Testing Library</b>.",
+                    "Implemented <b>CI/CD pipelines</b> for front-end deployments and reduced downtime by 30%.",
+                    "Enhanced application performance with lazy loading, image optimization, and caching.",
+                    "Contributed to <b>AI-powered usage analytics</b> for performance dashboards."
+                ])
+work_experience("Letsbiz", "Ahmedabad, India",
                 "Front-End Developer", "Jun 2021 - Nov 2021",
                 [
-                    "Built modular, reusable <b>React</b> components and UI frameworks using <b>Redux</b> and <b>Tailwind CSS</b>.",
-                    "Developed <b>Storybook</b> component libraries to streamline design and development workflows.",
-                    "Integrated <b>GraphQL</b> APIs for real-time data updates and reduced over-fetching across client modules.",
-                    "Optimized application performance through <b>code-splitting</b> and asset preloading, improving load times by 20%.",
-                    "Implemented <b>responsive design</b> principles ensuring pixel-perfect UIs on mobile and desktop devices.",
-                    "Collaborated in <b>Agile sprints</b> to deliver prioritized product features and resolve production issues efficiently.",
-                    "Improved <b>SEO</b> and <b>Lighthouse</b> performance scores via bundle optimization and accessibility improvements.",
-                    "Documented front-end architecture decisions and mentored new developers during onboarding."
-                ], add_bottom_space=True)
-work_experience("X’Pert Infotech", "Ahmedabad, India.",
+                    "Created reusable <b>React</b> components and improved design consistency with <b>Storybook</b> documentation.",
+                    "Integrated <b>GraphQL</b> APIs for real-time data updates and efficient query handling.",
+                    "Collaborated with design and QA teams to deliver fully responsive UIs for production.",
+                    "Enhanced SEO and accessibility compliance using semantic HTML and ARIA roles.",
+                    "Implemented <b>AI-driven testing scripts</b> for front-end validation across devices.",
+                    "Improved app performance by 18% through code refactoring and dependency optimization.",
+                    "Developed developer onboarding docs and reusable hooks for internal teams."
+                ])
+work_experience("X'Pert Infotech", "Ahmedabad, India",
                 "Jr. Web Developer", "Jan 2020 - May 2021",
                 [
-                    "Developed dynamic web interfaces using <b>HTML5</b>, <b>CSS3</b>, and <b>JavaScript</b> for enterprise client dashboards.",
-                    "Assisted in developing <b>REST APIs</b> with <b>Node.js</b> and <b>Express.js</b> for backend data exchange.",
-                    "Refactored SQL queries and improved database indexing, enhancing <b>performance</b> by 25%.",
-                    "Implemented <b>JWT-based authentication</b> and role-based authorization to enhance security.",
-                    "Created <b>technical documentation</b> for APIs, user flows, and new feature integration.",
-                    "Performed <b>regression testing</b> and supported post-release issue resolution in production.",
-                    "Collaborated with backend developers and QA engineers to improve bug detection and code quality.",
-                    "Maintained <b>continuous improvement</b> through feedback loops and iterative deployment cycles."
-                ], add_bottom_space=False)
+                    "Developed modular <b>HTML5/CSS3</b> layouts and <b>JavaScript</b> components for enterprise clients.",
+                    "Assisted in developing <b>Node.js</b> APIs and handled secure user authentication flows.",
+                    "Applied responsive design principles to support both web and mobile users.",
+                    "Conducted <b>cross-browser testing</b> and resolved rendering issues efficiently.",
+                    "Collaborated with QA and design teams for bug tracking and feature refinements.",
+                    "Integrated <b>AI-based analytics widgets</b> for user activity visualization.",
+                    "Documented APIs and workflows for knowledge transfer."
+                ])
 sep()
 
 # ---------- Projects ----------
 section_title("PROJECTS")
-project_block("TrySpeed – AI-Integrated Crypto Payout & Analytics Platform (OpenXcell)", "www.tryspeed.com",
+
+project_block("SharedStorage - Storage Sharing Marketplace Platform", "www.sharedstorage.ca",
+              "Flutter, React, Node.js, MongoDB, AWS S3, Docker, Google Maps API",
+              [
+                  "Created peer-to-peer storage sharing app with <b>Flutter</b> and <b>React</b> frontends.",
+                  "Integrated <b>Google Maps API</b> for dynamic geolocation and listing mapping.",
+                  "Implemented secure authentication and <b>AWS S3</b> image upload flows.",
+                  "Built <b>AI-based search recommendations</b> to enhance discoverability.",
+                  "Configured Dockerized environments for seamless local and cloud builds.",
+                  "Designed admin dashboards for rental analytics and activity monitoring."
+              ])
+              
+project_block("TrySpeed - AI-Integrated Crypto Payout & Analytics Platform", "www.tryspeed.com",
               "React, Next.js, Node.js, Lightning Network, GraphQL, Prisma, AWS, Docker",
               [
-                "Built a <b>crypto payment platform</b> enabling businesses to accept <b>BTC</b>, <b>USDT</b>, and <b>USDC</b> via <b>Lightning</b>, <b>ERC20</b>, and <b>TRC20</b>.",
-                "Developed <b>automated backend pipelines</b>, boosting throughput by 40% and cutting manual effort by 50%.",
-                "Architected <b>RESTful APIs</b> for merchant onboarding and developer integrations.",
-                "Implemented <b>real-time dashboards</b> with <b>React</b>/<b>Next.js</b> for settlements and transactions.",
-                "Scaled with <b>microservices</b> using <b>Node.js</b>, <b>GraphQL</b>, and <b>Prisma ORM</b>.",
-                "Enhanced uptime via <b>async queues</b> and <b>redundant blockchain nodes</b>.",
-                "Deployed on <b>AWS ECS</b> with <b>Docker</b> and automated <b>CI/CD</b> via <b>GitHub Actions</b>.",
-                "Mentored team on <b>code optimization</b> and <b>CI/CD best practices</b> for reliability."
-              ], add_bottom_space=True)
+                  "Developed secure crypto transaction modules with <b>Lightning Network</b> and <b>ERC20</b> integration.",
+                  "Built admin dashboards in <b>React</b> for merchant onboarding and settlement analytics.",
+                  "Integrated <b>GraphQL APIs</b> and <b>Prisma ORM</b> for optimized database performance.",
+                  "Configured <b>AWS ECS</b> and Docker containers for deployment automation.",
+                  "Implemented <b>AI-driven transaction insights</b> improving uptime and data accuracy.",
+                  "Collaborated with teams to maintain scalable microservice architecture."
+              ])
 
-project_block("LIMS – Laboratory Information Management System", "",
+project_block("LIMS - Laboratory Information Management System", "",
               "React, Redux, Node.js, Express, MongoDB, AWS",
               [
-                "Built secure, role-based modules for <b>sample tracking</b> and workflows.",
-                "Integrated <b>REST APIs</b> for seamless backend data synchronization.",
-                "Developed <b>analytics dashboards</b> with <b>React</b> and <b>Redux</b> for visualization.",
-                "Optimized DB schema and queries to improve scalability and performance.",
-                "Added <b>data validation</b> and <b>error handling</b> layers for reliability.",
-                "Automated testing with <b>Jest</b> and <b>Cypress</b>, reducing regression effort.",
-                "Deployed on <b>AWS</b> with secure S3 storage and load-balanced instances.",
-                "Documented APIs and setup for cross-team collaboration."
-              ], add_bottom_space=True)
+                  "Built secure role-based dashboards and analytics features for lab operations.",
+                  "Developed REST endpoints for sample workflows with authentication.",
+                  "Created data visualization panels using <b>React</b> and <b>Redux</b>.",
+                  "Automated test coverage using <b>Jest</b> and <b>Cypress</b> frameworks.",
+                  "Deployed on AWS with load-balanced configuration and S3 integration.",
+                  "Implemented <b>AI-based data analysis</b> to detect workflow anomalies."
+              ])
 
-project_block("ShopSphere – AI-Driven E-Commerce Platform with Mobile App", "",
-              "React Native, Next.js, GraphQL, AWS, Tailwind CSS",
+project_block("ShopSphere - AI-Driven E-Commerce Platform", "",
+              "React, Next.js, GraphQL, Stripe API, AWS, Tailwind CSS",
               [
-                "Built an <b>AI-powered e-commerce platform</b> with smart product recommendations.",
-                "Developed <b>mobile-first</b> apps using <b>React Native</b> and <b>Next.js</b>.",
-                "Integrated <b>Stripe</b> payments, <b>order tracking</b>, and push notifications.",
-                "Built scalable <b>GraphQL APIs</b> optimized for low latency and high load.",
-                "Automated <b>CI/CD</b> pipelines with <b>GitHub Actions</b> and <b>Docker</b>.",
-                "Created <b>real-time dashboards</b> for sales and inventory analytics.",
-                "Improved user flow and conversion rates by 18% through UX optimization.",
-                "Documented architecture, APIs, and infra setup for team scalability."
-              ], add_bottom_space=False)
+                  "Developed full-featured e-commerce platform with <b>Next.js</b> and <b>React Hooks</b>.",
+                  "Integrated <b>Stripe API</b> for secure payments and refund automation.",
+                  "Built <b>AI recommendation engine</b> to enhance user shopping experience.",
+                  "Designed responsive pages using <b>Tailwind CSS</b> improving Lighthouse scores.",
+                  "Implemented <b>GraphQL</b> queries for performance optimization.",
+                  "Led UI review cycles improving customer conversion by 17%."
+              ])
 sep()
 
 # ---------- Education ----------
 section_title("EDUCATION")
-edu_blocks = [
-    ("Algonquin College, Ottawa, ON", "2024 – 2025", "Post Graduate Certificate in Cloud Development and Operations", "CGPA: 3.94/4"),
-    ("Conestoga College, Milton, ON", "2023 – 2024", "Post Graduate Certificate in Computer Application Development", "CGPA: 3.72/4"),
-    ("Silver Oak College of Engineering & Technology, India", "2018 – 2021", "Bachelor of Engineering in Information Technology", "CGPA: 8.41/10"),
+edu = [
+    ("Algonquin College, Ottawa, ON", "2024 - 2025", "Post Graduate Certificate in Cloud Development and Operations", "CGPA: 3.94/4"),
+    ("Conestoga College, Milton, ON", "2023 - 2024", "Post Graduate Certificate in Computer Application Development", "CGPA: 3.72/4"),
+    ("Silver Oak College of Engineering & Technology, India", "2018 - 2021", "Bachelor of Engineering in Information Technology", "CGPA: 8.41/10"),
 ]
-for idx, (school, years, degree, cgpa) in enumerate(edu_blocks):
-    t = Table(
-        [
-            [Paragraph(school, styles['BodyBoldJustify']), Paragraph(years, styles['BodyRight'])],
-            [Paragraph(degree, styles['BodyJustify']), Paragraph(cgpa, styles['BodyRightBold'])],
-        ],
-        colWidths=[W*0.65, W*0.35]
-    )
-    t.setStyle(TableStyle([
-        ("LEFTPADDING", (0,0), (-1,-1), 0),
-        ("RIGHTPADDING", (0,0), (-1,-1), 0),
-        ("TOPPADDING", (0,0), (-1,-1), 0),
-        ("BOTTOMPADDING", (0,0), (-1,-1), 0),
-        ("VALIGN", (0,0), (-1,-1), "TOP"),
-    ]))
+for s, y, d, c in edu:
+    t = Table([[Paragraph(s, styles['BodyBoldJustify']), Paragraph(y, styles['BodyRight'])],
+               [Paragraph(d, styles['BodyJustify']), Paragraph(c, styles['BodyRightBold'])]],
+              colWidths=[W*0.65, W*0.35])
     story.append(t)
-    if idx < len(edu_blocks) - 1:
-        story.append(Spacer(1, 2))
+    story.append(Spacer(1, 2))
 
-# ---------- Build ----------
 doc.build(story)
 output_path
 
@@ -281,14 +227,19 @@ Format & Style
 -Do not change layout, spacing, fonts, or section order.
 -Resume must always be exactly 2 pages — not longer, not shorter.
 -Sections to Tailor for Each Job Description
+-Don’t use square, emojis, jiblishword and all.
+-When I Open PDF In Google Chrome IN title it shows Jimish Gajjar - Resume
+-Add 1 or 2 points about ai technology and ai coding in expiration and projects.
+-Add proper - hyphens.
+-fix it by replacing all of them with standard ASCII hyphens (-) and clean up any other invisible characters so the text renders cleanly everywhere (including Chrome, macOS Preview, and Windows).
 
 Summary → Rewrite based on the job description.
 
 Technical Skills → Update categories and tools to highlight skills relevant to the job description.
 
-Work Experience → Keep companies and roles , years of expireance the same, but rewrite the 8 bullet points per job with a mix of long and short points, tailored to the job description keywords.
+Work Experience → Keep companies and roles , years of expireance the same, but rewrite the 7 bullet points per job with a mix of long and short points, tailored to the job description keywords.
 
-Projects → Keep project names and links the same, but rewrite 8 bullets per project to emphasize skills with a mix of long and short points, tailored to the job description keywords..
+Projects → Keep project names and links the same, but rewrite 6.5 bullets per project to emphasize skills with a mix of long and short points, tailored to the job description keywords..
 
 Location → If the job description specifies a location, use that in the header. Otherwise, default to Toronto, ON.
 
